@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/friday-cards/static/css/main.ff495dea.css",
+    "main.js": "/friday-cards/static/js/main.3ef6622e.js",
+    "static/js/787.4d6bf454.chunk.js": "/friday-cards/static/js/787.4d6bf454.chunk.js",
+    "static/media/logo.svg": "/friday-cards/static/media/logo.b2e5a01e505f739f1484b881277d5186.svg",
+    "index.html": "/friday-cards/index.html",
+    "main.ff495dea.css.map": "/friday-cards/static/css/main.ff495dea.css.map",
+    "main.3ef6622e.js.map": "/friday-cards/static/js/main.3ef6622e.js.map",
+    "787.4d6bf454.chunk.js.map": "/friday-cards/static/js/787.4d6bf454.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ff495dea.css",
+    "static/js/main.3ef6622e.js"
+  ]
+}
