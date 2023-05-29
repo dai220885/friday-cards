@@ -9,62 +9,22 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import './index.css';
-import {Login} from 'features/Login';
-import {Register} from 'features/Register';
+import {Login} from 'features/login/Login';
+import {Register} from 'features/register/Register';
 import {Profile} from 'features/Profile';
+import {Counter} from 'features/counter/Counter';
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <div>Hello world!</div>,
-  },
-  {
-    path: "/login",
-    element: <Login/>,
-  },
-  {
-    path: "/register",
-    element: <Register/>,
-  },
-  {
-    path: "/check-email",
-    element: <h1>Check email</h1>,
-  },
-  {
-    path: "/set-new-password",
-    element: <h1>Set new password</h1>,
-  },
-  {
-    path: "/forgot-password",
-    element: <h1>Forgot password</h1>,
-  },
-  {
-    path: "/profile",
-    element: <Profile/>,
-  },
-  {
-    path: "/packs",
-    element: <h1>Packs</h1>,
-  },
-  {
-    path: "/cards",
-    element: <h1>Cards</h1>,
-  },
-  {
-    path: "/learn",
-    element: <h1>Learn</h1>,
-  },
-]);
+
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
+    {/*<Provider store={store}>*/}
+    {/*  <RouterProvider router={router} />*/}
       <App />
-    </Provider>
+    {/*</Provider>*/}
   </React.StrictMode>
 );
 
