@@ -1,0 +1,79 @@
+.button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 28px;
+
+    border-radius: 30px;
+    border: none;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    color: var(--white--color);
+
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.default {
+    background: var(--primary-color);
+    box-shadow: var(--primary-color--shadow);
+}
+
+.default:hover {
+    background: var(--primary-color--hover);
+}
+
+.default:active {
+    background: var(--primary-color--active);
+}
+
+.secondary {
+    background: var(--white--color);
+    color: var(--primary-color);
+    box-shadow: var(--secondary-color--shadow);
+}
+
+.secondary:hover {
+    background: #f1f1f1;
+}
+
+.secondary:active {
+    background-color: #0059B3;
+    color: var(--white--color);
+}
+
+.buttonWrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonNameBlack {
+    color: var(--black-color)
+}
+.buttonNameWhite {
+    color: var(--white--color)
+}
+.red {
+    background: #FF3636;
+    box-shadow: 0px 4px 18px rgba(255, 54, 54, 0.35), inset 0px 1px 0px rgba(255, 255, 255, 0.3);
+}
+
+.red:hover {
+    background: #FF1A47;
+}
+
+.red:active {
+    background: #B31232;
+}
+
+Button:disabled {
+    background: #0059B3;
+    opacity: 0.5;
+}

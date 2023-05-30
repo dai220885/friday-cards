@@ -9,8 +9,6 @@ export const AuthApi = {
 	},
 }
 
-
-
 export type RegisterResponseType = {
 	addedUser: AddedUserType
 }
@@ -23,7 +21,9 @@ export type AddedUserType = Omit<UserType, "token" | "tokenDeathTime">
 export type RegisterArgsType = Pick<UserType, "email"> & PasswordToPick
 export type LoginArgsType = Pick<UserType, "email" | "rememberMe"> & PasswordToPick
 export type PartialUserType = Partial<UserType>
-//Omit - убирает из типа указанные поля, Pick - выбирает из указанного типа ТОЛЬКО указанные поля, Partial - берет все поля из указанного типа, но делает их не обязательными.
+//Omit - убирает из типа указанные поля,
+// Pick - выбирает из указанного типа ТОЛЬКО указанные поля,
+// Partial - берет все поля из указанного типа, но делает их не обязательными.
 
 export type UserType = {
 	_id: string

@@ -1,0 +1,11 @@
+.title {
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 32px;
+    margin-bottom: 30px;
+    text-shadow: 0 4px 4px #0000003F;
+}
+.titleWrapper {
+    display: flex;
+    justify-content: center;
+}

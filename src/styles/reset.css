@@ -1,0 +1,72 @@
+
+/* Reset.css */
+
+/* Box sizing */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Remove default margin and padding */
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+blockquote,
+pre {
+    margin: 0;
+    padding: 0;
+}
+
+/* Remove list styles (bullet points) */
+ul,
+ol {
+    list-style: none;
+}
+
+/* Remove underline from links */
+a {
+    text-decoration: none;
+}
+
+/* Make images responsive */
+img {
+    max-width: 100%;
+    height: auto;
+}
+input {
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: inherit;
+    border: none; /* убираем границу */
+    outline: none; /* убираем обводку при фокусе */
+    background: transparent; /* убираем фон */
+    font-family: inherit; /* используем наследуемый шрифт */
+    font-size: 16px; /* используем наследуемый размер шрифта */
+    color: inherit; /* используем наследуемый цвет текста */
+    padding: 0; /* убираем отступы */
+    margin: 0; /* убираем отступы */
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    background-color: #fff !important;
+    -webkit-text-fill-color: #000 !important;
+    transition: background-color 5000s ease-in-out 0s;
+    font-size: 16px;
+}
+button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}

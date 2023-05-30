@@ -1,0 +1,47 @@
+.auth__inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.auth__rememberMe {
+    margin-top: 24px;
+}
+.auth__label {
+    font-size: 14px;
+    line-height: 17px;
+    color: var(--black-color);
+}
+.auth__forgotPasswordWrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 29px;
+}
+.auth__alreadyHaveAcc {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+    color: var(--grey-color);
+    margin-top: 30px;
+}
+.auth__redirect {
+    text-decoration: underline;
+    color: var(--primary-color);
+    margin-top: 11px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+}
+.auth__checkEmailWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+.auth__sendEmailDesc {
+    text-align: center;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    color: var(--grey-color)
+}
