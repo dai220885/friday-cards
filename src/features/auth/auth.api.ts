@@ -1,4 +1,5 @@
 import {AuthInstance} from 'features/auth/auth.instance';
+import axios from 'axios';
 
 export const AuthApi = {
 	register: (params: RegisterArgsType) => {
@@ -7,8 +8,13 @@ export const AuthApi = {
 	login: (params: LoginArgsType) => {
 		return AuthInstance.post<UserType>("login", params)
 	},
+	forgotPassword: (arg: ForgotPassArgsType) => {
+		return AuthInstance.post("forgot", arg)
+		//return axios.post("https://neko-back.herokuapp.com/2.0/auth/forgot", arg, {withCredentials: true})
+	},
 }
 
+//types:
 export type RegisterResponseType = {
 	addedUser: AddedUserType
 }
@@ -17,6 +23,11 @@ type PasswordToPick = {
 	password: string
 }
 
+type FieldsToForgot = {
+	from?: string
+	message: string
+}
+export type ForgotPassArgsType = Pick<UserType, "email"> & FieldsToForgot
 export type AddedUserType = Omit<UserType, "token" | "tokenDeathTime">
 export type RegisterArgsType = Pick<UserType, "email"> & PasswordToPick
 export type LoginArgsType = Pick<UserType, "email" | "rememberMe"> & PasswordToPick
@@ -24,7 +35,6 @@ export type PartialUserType = Partial<UserType>
 //Omit - убирает из типа указанные поля,
 // Pick - выбирает из указанного типа ТОЛЬКО указанные поля,
 // Partial - берет все поля из указанного типа, но делает их не обязательными.
-
 export type UserType = {
 	_id: string
 	email: string
@@ -40,22 +50,4 @@ export type UserType = {
 	__v: number
 }
 
-
-
-
-type ResponseAfterRegistration = {
-	addedUser: UserFromServerAfterRegistration;
-}
-type UserFromServerAfterRegistration = {
-	_id: string;
-	email: string;
-	rememberMe: boolean;
-	isAdmin: boolean;
-	name: string;
-	verified: boolean;
-	publicCardPacksCount: number;
-	created: string;
-	updated: string;
-	__v: number;
-}
 
