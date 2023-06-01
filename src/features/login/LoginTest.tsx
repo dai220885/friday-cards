@@ -1,7 +1,7 @@
 import {authThunks} from "features/auth/auth.slice"
 import s from "features/auth/styles.module.css"
 import React, {useState} from "react"
-import {Card} from "common/components/Card/Card"
+import {AuthCard} from "common/components/Card/AuthCard"
 import {Title} from "common/components/Title/Title"
 import {NavLink, useNavigate} from "react-router-dom"
 import {Footer} from "common/components/Footer/Footer"
@@ -50,7 +50,7 @@ export const LoginTest = () => {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} action="#" autoComplete={'off'}>
-			<Card id={'cards-Login'}>
+			<AuthCard id={'cards-Login'}>
 				<Title title={"Sign in"}/>
 				<button onClick={()=>toast.success("test toast")}>+</button>
 				<div className={s.auth__inputGroup}>
@@ -128,7 +128,7 @@ export const LoginTest = () => {
 						<p className={s.auth__redirect}>Sign up</p>
 					</NavLink>
 				</Footer>
-			</Card>
+			</AuthCard>
 		</form>
 	)
 }
