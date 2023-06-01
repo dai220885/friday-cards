@@ -15,6 +15,7 @@ import {instance} from 'app/instance';
 import {LoginTest} from 'features/login/LoginTest';
 import {Layout} from 'features/layout/Layout';
 import {toast} from 'react-toastify';
+import {ForgotPasswordForm} from 'features/auth/forgot-password/ForgotPasswordForm';
 
 const Test = () => {
 	const isLoading = useAppSelector((state) => state.app.isLoading);
@@ -76,7 +77,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/forgot-password',
-		element: <h1>Forgot password</h1>,
+		element: <ForgotPasswordForm/>,
 	},
 	{
 		path: '/profile',
