@@ -8,7 +8,7 @@ type PropsType = {
   id: string
 }
 
-export const Card: FC<PropsType> = ({children, id}) => {
+export const AuthCard: FC<PropsType> = ({children, id}) => {
 
   return (
     <div className={s.cardWrapper}>
