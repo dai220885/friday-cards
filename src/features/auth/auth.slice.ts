@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {AuthApi, LoginArgsType, RegisterArgsType, UserType} from 'features/auth/auth.api';
+import {AuthApi, ForgotPassArgsType, LoginArgsType, RegisterArgsType, UserType} from 'features/auth/auth.api';
 import {createAppAsyncThunk} from 'common/utils/create.app.async.thunk';
+import {Navigate} from 'react-router-dom';
 
 // const register = createAsyncThunk('auth/register', (arg, thunkAPI)) => {
 // 	const
@@ -8,11 +9,12 @@ import {createAppAsyncThunk} from 'common/utils/create.app.async.thunk';
 const THUNK_PREFIXES = {
 	REGISTER: 'auth/register',
 	LOGIN: 'auth/login',
+	FORGOT_PASS: 'auth/forgot-password'
 }
 
 const slice = createSlice({
 	name: 'auth',
-	initialState: {user: null as UserType | null, isLoading: false},
+	initialState: {user: null as UserType | null, isLoading: false, isRegistered: false},
 	//когда используем extraReducers, объект reducers, как правило, пустой:
 	reducers: {
 		// setUser: (state, action: PayloadAction<{ user: UserType }>) => {
@@ -31,6 +33,9 @@ const slice = createSlice({
 		})
 		builder.addCase(login.rejected, (state) => {
 			state.isLoading = false
+		})
+		builder.addCase(register.fulfilled, (state)=>{
+			state.isRegistered = true
 		})
 	},
 });
@@ -55,7 +60,6 @@ const register = createAppAsyncThunk<void, RegisterArgsType>(
 	}
 );
 
-
 const login = createAppAsyncThunk<{ user: UserType }, LoginArgsType>(
 	THUNK_PREFIXES.LOGIN,
 	async (arg, thunkAPI) => {
@@ -76,8 +80,16 @@ const login = createAppAsyncThunk<{ user: UserType }, LoginArgsType>(
 )
 
 
+const forgotPassword = createAppAsyncThunk<any, ForgotPassArgsType>(
+	THUNK_PREFIXES.FORGOT_PASS,
+	async (arg, thunkAPI
+	) => {
+		await AuthApi.forgotPassword(arg)
+	})
+
+
 
 export const authReducer = slice.reducer;
 export const authActions = slice.actions
 // Санки  упакуем в объект, нам это пригодится в дальнейшем
-export const authThunks = {register, login};
+export const authThunks = {register, login, forgotPassword};
