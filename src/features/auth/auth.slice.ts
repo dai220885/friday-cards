@@ -1,7 +1,18 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {AuthApi, ForgotPassArgsType, LoginArgsType, RegisterArgsType, UserType} from 'features/auth/auth.api';
+import {
+	AuthApi,
+	ForgotPassArgsType,
+	LoginArgsType,
+	RegisterArgsType,
+	RegisterResponseType,
+	UserType
+} from 'features/auth/auth.api';
 import {createAppAsyncThunk} from 'common/utils/create.app.async.thunk';
 import {Navigate} from 'react-router-dom';
+import {isAxiosError} from 'axios';
+import {createThunkAction} from 'common/utils/create-thunk-action';
+import {toast} from 'react-toastify';
+import {thunkTryCatch} from 'common/utils/thunk-try-catch';
 
 // const register = createAsyncThunk('auth/register', (arg, thunkAPI)) => {
 // 	const
@@ -22,8 +33,10 @@ const slice = createSlice({
 		// },
 	},
 	extraReducers: (builder) => {
+
 		builder.addCase(login.pending, (state) => {
 			state.isLoading = true
+			state.error = null
 		})
 		builder.addCase(login.fulfilled, (state, action) => {
 			if (action.payload?.user) {
@@ -31,19 +44,53 @@ const slice = createSlice({
 				state.isLoading = false
 			}
 		})
-		builder.addCase(login.rejected, (state) => {
+		builder.addCase(login.rejected, (state,action) => {
+			console.log(action.payload)
+			//пофиксить!!!, сюда придет ошибка в формате, в котором отправляется в thunk-try-catch
+			if (isAxiosError(action.payload)) {
+				state.error = action.payload?.response?.data?.error
+			}
+			else state.error = 'login error has occurred'
+			//state.error = 'an error has occurred'
+			//console.log(action.payload)
 			state.isLoading = false
+			//toast.error(state.error)
 		})
 		builder.addCase(register.fulfilled, (state) => {
 			state.isRegistered = true
 		})
 		builder.addCase(register.rejected, (state, action) => {
 			console.log(action.payload)
+			//if (action.payload.e) state.error = action.payload
+			//пофиксить!!!, сюда придет ошибка в формате, в котором отправляется в thunk-try-catch
+			if (isAxiosError(action.payload)) {
+				state.error = action.payload?.response?.data?.error
+			}
+			else state.error = 'register error has occurred'
+			//toast.error(state.error)
+			console.log('register rejected')
 		})
 	},
 });
 
-const register = createAppAsyncThunk<void, RegisterArgsType>(
+const register = createAppAsyncThunk<{ user: RegisterResponseType }, RegisterArgsType>(
+	THUNK_PREFIXES.REGISTER,
+	createThunkAction(AuthApi.register, (res) => ({ user: res.data })),
+)
+
+//не работает:
+const __register = createAppAsyncThunk<any, RegisterArgsType>(
+	THUNK_PREFIXES.REGISTER,
+	(arg, thunkAPI) => {
+	return thunkTryCatch(thunkAPI, ()=>{
+			return  AuthApi.register(arg).then((res)=>{
+				return ({user: res.data})
+			})
+		})
+	}
+	)
+
+const _register = createAppAsyncThunk<any, RegisterArgsType>(
 	// 1 - prefix
 	THUNK_PREFIXES.REGISTER,
 	// 2 - callback (условно наша старая санка), в которую:
@@ -56,13 +103,12 @@ const register = createAppAsyncThunk<void, RegisterArgsType>(
 		try {
 			const res = await AuthApi.register(arg)
 			console.log(res)
-		} catch (e: any) {
-			//console.error(e)
+		} catch (e) {
+			console.error(e)
 			//возвращаем rejectWithValue, чтобы отрабатывался register.rejected
 			// и в него попадала ошибка е
 			return rejectWithValue(e);
 		}
-
 		// AuthApi.register(arg)
 		// 	.then((res) => {
 		// 		//debugger;
@@ -72,24 +118,32 @@ const register = createAppAsyncThunk<void, RegisterArgsType>(
 		// });
 	}
 );
-
 const login = createAppAsyncThunk<{ user: UserType }, LoginArgsType>(
+	THUNK_PREFIXES.LOGIN,
+	createThunkAction(AuthApi.login, (res) => ({ user: res.data })),
+)
+
+const _login = createAppAsyncThunk<{ user: UserType }, LoginArgsType>(
 	THUNK_PREFIXES.LOGIN,
 	async (arg, thunkAPI) => {
 		//деструктуризируем методы из thunkAPI (dispatch будет нужен, чтобы задиспатчить экшен setUser,
 		// который записывает данные залогиненного юзера в стейт. rejectWithValue нужен для обработки ошибок
 		// при использовании extraReducers это нам не нужно
 		//const {dispatch, getState, rejectWithValue} = thunkAPI
-		const res = await AuthApi.login(arg)
-		//dispatch(authActions.setUser({user: res.data}))
-		return {user: res.data} //из санки нужно возвращать данные, которые попадут в extraReducers в action.payload
-	},
-	// (arg, thunkAPI) => {
-	// 	const {dispatch, getState, rejectWithValue} = thunkAPI
-	// 	AuthApi.login(arg).then((res)=>{
-	// 		dispatch (authActions.setUser({user: res.data}))
-	// 	})
-	// },
+		const {rejectWithValue} = thunkAPI
+		try {
+			const res = await AuthApi.login(arg)
+			return {user: res.data} //из санки нужно возвращать данные, которые попадут в extraReducers в action.payload
+		} catch (e) {
+			//console.log(e)
+			//return rejectWithValue(!isAxiosError(e)? e: e?.response?.data?.error)
+			return rejectWithValue(e)
+		}
+		//то же самое, но без try-catch
+		// 	return AuthApi.login(arg)
+		// 		.then((res)=>{return {user: res.data}})
+		// 		.catch((e)=>{return rejectWithValue(e)})
+	}
 )
 
 const forgotPassword = createAppAsyncThunk<any, ForgotPassArgsType>(
