@@ -38,13 +38,17 @@ export const LoginTest = () => {
 
 	const onSubmit: SubmitHandler<FormDataType> = (data) => {
 		dispatch(authThunks.login(data))
-			//.unwrap()
-			.then(() => {
-				toast.success("You are logged in successfully")
-				// setTimeout(() => {
-				// 	navigate("/packs")
-				// }, 1000)
-			})
+		// 	.unwrap()
+		// 	.then(() => {
+		// 		toast.success("You are logged in successfully")
+		// 		// setTimeout(() => {
+		// 		// 	navigate("/packs")
+		// 		// }, 1000)
+		// 	}).catch((err) => {
+		// 		//debugger
+		// 	toast.error("login error")
+		// 	console.log(err)
+		// })
 	}
 
 
