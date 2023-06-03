@@ -10,7 +10,9 @@ export const Layout: FC<PropsType> = ({children}) => {
   return (
     <div className={s.layout}>
       <div className={s.layoutContainer}>
+        {/*<Header/>*/}
         {children}
+        {/*<Footer/>*/}
       </div>
     </div>
   )
