@@ -8,7 +8,7 @@ import {createBrowserRouter, Navigate, RouterProvider} from 'react-router-dom';
 import {Login} from 'features/login/Login';
 import {Register} from 'features/register/Register';
 import {Profile} from 'features/Profile';
-import {createTheme, Theme} from '@mui/material';
+import {createTheme, LinearProgress, Theme, ThemeProvider} from '@mui/material';
 import {useAppDispatch, useAppSelector} from 'app/hooks';
 import {appActions} from 'features/App/app.slice';
 import {instance} from 'app/instance';
@@ -36,11 +36,11 @@ const Test = () => {
 
 	const handleErrorButtonClick = () => {
 		dispatch(appActions.setError({error: 'new test error'}))
-		toast.error("new test error")
+		toast.error('new test error')
 	}
 	return (
 		<div className="App">
-			{isLoading && <h1>Loader...</h1>}
+			{/*{isLoading && <h1>Loader...</h1>}*/}
 			<Counter/>
 			<button onClick={handleErrorButtonClick}>create error</button>
 			{!!error && <h2>{error} </h2>}
@@ -87,10 +87,13 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/packs',
-		element: <><h1>Packs</h1><button onClick={()=>{
-			toast.success("test toast");
-			alert('333')
-		}}>+</button></>,
+		element: <><h1>Packs</h1>
+			<button onClick={() => {
+				toast.success('test toast');
+				alert('333')
+			}}>+
+			</button>
+		</>,
 	},
 	{
 		path: '/cards',
@@ -105,27 +108,34 @@ const router = createBrowserRouter([
 const theme: Theme = createTheme()
 
 function App() {
+	const isLoading = useAppSelector((state) => state.app.isLoading)
 	return (
-
-		<Provider store={store}>
-			<Layout>
-				<ToastContainer
-					position="top-right"
-					autoClose={1000}
-					hideProgressBar={false}
-					newestOnTop={false}
-					closeOnClick
-					rtl={false}
-					pauseOnFocusLoss
-					draggable
-					pauseOnHover
-					theme="light"
-				/>
-				{/* Same as */}
-				{/*<ToastContainer />*/}
+		<ThemeProvider theme={theme}>
+			 {/*<Provider store={store}>*/}
+			<ToastContainer
+				position="top-right"
+				autoClose={1000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="light"
+			/>
+			{isLoading && <LinearProgress/>}
+			{/* Same as */}
+			{/*<ToastContainer />*/}
+			{/*<Layout>*/}
 				<RouterProvider router={router}/>
-			</Layout>
-		</Provider>
+			{/*</Layout>*/}
+			{/*</Provider>*/}
+
+
+		</ThemeProvider>
+
+
 
 		// <div className="App">
 		//   <header className="App-header">
