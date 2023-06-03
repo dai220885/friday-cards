@@ -14,7 +14,7 @@ const THUNK_PREFIXES = {
 
 const slice = createSlice({
 	name: 'auth',
-	initialState: {user: null as UserType | null, isLoading: false, isRegistered: false},
+	initialState: {user: null as UserType | null, isLoading: false, isRegistered: false, error: null as null | string},
 	//когда используем extraReducers, объект reducers, как правило, пустой:
 	reducers: {
 		// setUser: (state, action: PayloadAction<{ user: UserType }>) => {
@@ -34,8 +34,11 @@ const slice = createSlice({
 		builder.addCase(login.rejected, (state) => {
 			state.isLoading = false
 		})
-		builder.addCase(register.fulfilled, (state)=>{
+		builder.addCase(register.fulfilled, (state) => {
 			state.isRegistered = true
+		})
+		builder.addCase(register.rejected, (state, action) => {
+			console.log(action.payload)
 		})
 	},
 });
@@ -49,7 +52,17 @@ const register = createAppAsyncThunk<void, RegisterArgsType>(
 	// - вторым параметром thunkAPI, обратившись к которому получим dispatch и др. свойства
 	// https://redux-toolkit.js.org/usage/usage-with-typescript#typing-the-thunkapi-object
 	async (arg, thunkAPI) => {
-		await AuthApi.register(arg)
+		const {rejectWithValue} = thunkAPI
+		try {
+			const res = await AuthApi.register(arg)
+			console.log(res)
+		} catch (e: any) {
+			//console.error(e)
+			//возвращаем rejectWithValue, чтобы отрабатывался register.rejected
+			// и в него попадала ошибка е
+			return rejectWithValue(e);
+		}
+
 		// AuthApi.register(arg)
 		// 	.then((res) => {
 		// 		//debugger;
@@ -79,15 +92,12 @@ const login = createAppAsyncThunk<{ user: UserType }, LoginArgsType>(
 	// },
 )
 
-
 const forgotPassword = createAppAsyncThunk<any, ForgotPassArgsType>(
 	THUNK_PREFIXES.FORGOT_PASS,
 	async (arg, thunkAPI
 	) => {
 		await AuthApi.forgotPassword(arg)
 	})
-
-
 
 export const authReducer = slice.reducer;
 export const authActions = slice.actions
