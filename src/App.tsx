@@ -14,8 +14,9 @@ import {appActions} from 'features/App/app.slice';
 import {instance} from 'app/instance';
 import {LoginTest} from 'features/login/LoginTest';
 import {Layout} from 'features/layout/Layout';
-import {toast} from 'react-toastify';
+import {toast, ToastContainer} from 'react-toastify';
 import {ForgotPasswordForm} from 'features/auth/forgot-password/ForgotPasswordForm';
+import 'react-toastify/dist/ReactToastify.css'
 
 const Test = () => {
 	const isLoading = useAppSelector((state) => state.app.isLoading);
@@ -29,12 +30,13 @@ const Test = () => {
 		dispatch(appActions.setIsLoading({isLoading: true}));
 		setTimeout(() => {
 			dispatch(appActions.setIsLoading({isLoading: false}));
-		}, 3000);
+		}, 1000);
 		instance.get('/ping')
 	}, []);
 
 	const handleErrorButtonClick = () => {
 		dispatch(appActions.setError({error: 'new test error'}))
+		toast.error("new test error")
 	}
 	return (
 		<div className="App">
@@ -107,6 +109,20 @@ function App() {
 
 		<Provider store={store}>
 			<Layout>
+				<ToastContainer
+					position="top-right"
+					autoClose={1000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover
+					theme="light"
+				/>
+				{/* Same as */}
+				{/*<ToastContainer />*/}
 				<RouterProvider router={router}/>
 			</Layout>
 		</Provider>
