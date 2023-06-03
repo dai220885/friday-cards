@@ -9,7 +9,7 @@ export const Register = () => {
 	const isRegistered = useAppSelector((state)=>state.auth.isRegistered)
 
 	const registerHandler = () => {
-		dispatch(authThunks.register({email: 'dylevich220885.4@gmail.com', password: '12345678'}));
+		dispatch(authThunks.register({email: 'dylevich220885@gmail.com', password: '12345678'}));
 	};
 
 	return (!isRegistered
