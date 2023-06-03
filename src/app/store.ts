@@ -12,7 +12,9 @@ export const store = configureStore({
   // middleware: (getDefaultMiddleware) => {
   //   return getDefaultMiddleware().concat()
   // }
-  //middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend()
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false
+  }).prepend()
 });
 
 export type AppDispatch = typeof store.dispatch;
