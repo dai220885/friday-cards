@@ -52,7 +52,7 @@ export const LoginTest = () => {
 		<form onSubmit={handleSubmit(onSubmit)} action="#" autoComplete={'off'}>
 			<AuthCard id={'cards-Login'}>
 				<Title title={"Sign in"}/>
-				<button onClick={()=>toast.success("test toast")}>+</button>
+				<button onClick={()=>toast.error("test toast")}>+</button>
 				<div className={s.auth__inputGroup}>
 					<div className={i.inputWrapper}>
 						<TextField
