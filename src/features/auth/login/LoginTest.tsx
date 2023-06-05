@@ -38,25 +38,26 @@ export const LoginTest = () => {
 
 	const onSubmit: SubmitHandler<FormDataType> = (data) => {
 		dispatch(authThunks.login(data))
-		// 	.unwrap()
-		// 	.then(() => {
-		// 		toast.success("You are logged in successfully")
-		// 		// setTimeout(() => {
-		// 		// 	navigate("/packs")
-		// 		// }, 1000)
-		// 	}).catch((err) => {
-		// 		//debugger
-		// 	toast.error("login error")
-		// 	console.log(err)
-		// })
+			.unwrap()
+			.then(() => {
+				toast.success("You are logged in successfully")
+				setTimeout(() => {
+					//пока временно редиректим на profile, нужно изменить на /packs
+					navigate("/profile")
+				}, 500)
+			}).catch((err) => {
+				//debugger
+			//toast.error("login error")
+			console.log(err)
+		})
 	}
 
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} action="#" autoComplete={'off'}>
+		<form onSubmit={handleSubmit(onSubmit)} action="features/auth/login/LoginTest#" autoComplete={'off'}>
 			<AuthCard id={'cards-Login'}>
 				<Title title={"Sign in"}/>
-				<button onClick={()=>toast.error("test toast")}>+</button>
+				{/*<button onClick={()=>toast.error("test toast")}>+</button>*/}
 				<div className={s.auth__inputGroup}>
 					<div className={i.inputWrapper}>
 						<TextField
@@ -128,7 +129,7 @@ export const LoginTest = () => {
 				<Footer>
 					<Button type={"submit"} name={"Sign in"} xType={"default"}/>
 					<p className={s.auth__alreadyHaveAcc}>Not registered yet?</p>
-					<NavLink to={"/sign-up"}>
+					<NavLink to={"/register"}>
 						<p className={s.auth__redirect}>Sign up</p>
 					</NavLink>
 				</Footer>
