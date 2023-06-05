@@ -1,7 +1,7 @@
 import React from 'react';
 import {useAppDispatch, useAppSelector} from 'app/hooks';
 import {authActions, authThunks} from 'features/auth/auth.slice';
-import s from 'features/register/register.module.css';
+import s from 'features/auth/register/register.module.css';
 
 export const Login = () => {
 	const isLoading = useAppSelector((state) => state.auth.isLoading);
