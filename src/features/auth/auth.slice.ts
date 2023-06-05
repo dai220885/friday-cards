@@ -3,6 +3,7 @@ import {
 	AuthApi,
 	ForgotPassArgsType,
 	LoginArgsType,
+	PartialUserType,
 	RegisterArgsType,
 	RegisterResponseType,
 	UserType
@@ -20,12 +21,21 @@ import {thunkTryCatch} from 'common/utils/thunk-try-catch';
 const THUNK_PREFIXES = {
 	REGISTER: 'auth/register',
 	LOGIN: 'auth/login',
-	FORGOT_PASS: 'auth/forgot-password'
+	FORGOT_PASS: 'auth/forgot-password',
+	LOGOUT: 'auth/logout',
+	UPDATE_PROFILE_DATA: 'auth/update-profile-data',
+	ME: 'auth/me',
 }
 
 const slice = createSlice({
 	name: 'auth',
-	initialState: {user: null as UserType | null, isLoading: false, isRegistered: false, error: null as null | string},
+	initialState: {
+		user: null as UserType | null,
+		isLoading: false,
+		isAuthed: null as null | boolean,
+		isRegistered: null as null | boolean,
+		error: null as null | string
+	},
 	//когда используем extraReducers, объект reducers, как правило, пустой:
 	reducers: {
 		// setUser: (state, action: PayloadAction<{ user: UserType }>) => {
@@ -33,62 +43,89 @@ const slice = createSlice({
 		// },
 	},
 	extraReducers: (builder) => {
-
-		builder.addCase(login.pending, (state) => {
-			state.isLoading = true
-			state.error = null
-		})
-		builder.addCase(login.fulfilled, (state, action) => {
-			if (action.payload?.user) {
-				state.user = action.payload.user
+		builder
+			.addCase(login.pending, (state) => {
+				state.isLoading = true
+				state.error = null
+			})
+			.addCase(login.fulfilled, (state, action) => {
+				if (action.payload?.user) {
+					state.user = action.payload.user
+					state.isLoading = false
+					state.isAuthed = true
+				}
+			})
+			.addCase(login.rejected, (state, action) => {
+				console.log(action.payload)
+				//пофиксить!!!, сюда придет ошибка в формате, в котором отправляется в thunk-try-catch
+				if (isAxiosError(action.payload)) {
+					state.error = action.payload?.response?.data?.error
+				} else state.error = 'login error has occurred'
+				//state.error = 'an error has occurred'
+				//console.log(action.payload)
 				state.isLoading = false
-			}
-		})
-		builder.addCase(login.rejected, (state,action) => {
-			console.log(action.payload)
-			//пофиксить!!!, сюда придет ошибка в формате, в котором отправляется в thunk-try-catch
-			if (isAxiosError(action.payload)) {
-				state.error = action.payload?.response?.data?.error
-			}
-			else state.error = 'login error has occurred'
-			//state.error = 'an error has occurred'
-			//console.log(action.payload)
-			state.isLoading = false
-			//toast.error(state.error)
-		})
-		builder.addCase(register.fulfilled, (state) => {
-			state.isRegistered = true
-		})
-		builder.addCase(register.rejected, (state, action) => {
-			console.log(action.payload)
-			//if (action.payload.e) state.error = action.payload
-			//пофиксить!!!, сюда придет ошибка в формате, в котором отправляется в thunk-try-catch
-			if (isAxiosError(action.payload)) {
-				state.error = action.payload?.response?.data?.error
-			}
-			else state.error = 'register error has occurred'
-			//toast.error(state.error)
-			console.log('register rejected')
-		})
+				//toast.error(state.error)
+			})
+			.addCase(register.fulfilled, (state) => {
+				state.isRegistered = true
+			})
+			.addCase(register.rejected, (state, action) => {
+				console.log(action.payload)
+				//if (action.payload.e) state.error = action.payload
+				//пофиксить!!!, сюда придет ошибка в формате, в котором отправляется в thunk-try-catch
+				if (isAxiosError(action.payload)) {
+					state.error = action.payload?.response?.data?.error
+				} else state.error = 'register error has occurred'
+				//toast.error(state.error)
+				console.log('register rejected')
+			})
+			.addCase(logout.pending, (state) => {
+				state.isLoading = true
+				state.error = null //????????
+			})
+			.addCase(logout.fulfilled, (state) => {
+				state.user = null
+				state.isLoading = false
+				state.isAuthed = false
+				state.error = null //????????
+			})
+			.addCase(logout.rejected, (state, action) => {
+				state.isLoading = false
+				console.log(action.payload)
+				console.log(action)
+			})
+			.addCase(me.pending, (state) => {
+				state.isLoading = true
+				state.error = null //????????
+			})
+			.addCase(me.fulfilled, (state, action) => {
+				state.isLoading = false
+				state.error = null //????????
+				state.user = action.payload.user
+			})
+			.addCase(me.rejected, (state, action) => {
+				state.isLoading = false
+				//state.error = null //????????
+			})
 	},
 });
 
 const register = createAppAsyncThunk<{ user: RegisterResponseType }, RegisterArgsType>(
 	THUNK_PREFIXES.REGISTER,
-	createThunkAction(AuthApi.register, (res) => ({ user: res.data })),
+	createThunkAction(AuthApi.register, (res) => ({user: res.data})),
 )
 
 //не работает:
 const __register = createAppAsyncThunk<any, RegisterArgsType>(
 	THUNK_PREFIXES.REGISTER,
 	(arg, thunkAPI) => {
-	return thunkTryCatch(thunkAPI, ()=>{
-			return  AuthApi.register(arg).then((res)=>{
+		return thunkTryCatch(thunkAPI, () => {
+			return AuthApi.register(arg).then((res) => {
 				return ({user: res.data})
 			})
 		})
 	}
-	)
+)
 
 const _register = createAppAsyncThunk<any, RegisterArgsType>(
 	// 1 - prefix
@@ -120,7 +157,7 @@ const _register = createAppAsyncThunk<any, RegisterArgsType>(
 );
 const login = createAppAsyncThunk<{ user: UserType }, LoginArgsType>(
 	THUNK_PREFIXES.LOGIN,
-	createThunkAction(AuthApi.login, (res) => ({ user: res.data })),
+	createThunkAction(AuthApi.login, (res) => ({user: res.data})),
 )
 
 const _login = createAppAsyncThunk<{ user: UserType }, LoginArgsType>(
@@ -146,6 +183,22 @@ const _login = createAppAsyncThunk<{ user: UserType }, LoginArgsType>(
 	}
 )
 
+
+const logout = createAppAsyncThunk<void>(
+	THUNK_PREFIXES.LOGOUT,
+	createThunkAction(AuthApi.logout)
+)
+
+const updateProfile = createAppAsyncThunk<{ user: UserType }, PartialUserType>(
+	THUNK_PREFIXES.UPDATE_PROFILE_DATA,
+	createThunkAction(AuthApi.updateProfileData, (res) => ({user: res.data}))
+)
+
+const me = createAppAsyncThunk<{ user: UserType }>(
+	THUNK_PREFIXES.ME,
+	createThunkAction(AuthApi.me, (res) => ({user: res.data}))
+)
+
 const forgotPassword = createAppAsyncThunk<any, ForgotPassArgsType>(
 	THUNK_PREFIXES.FORGOT_PASS,
 	async (arg, thunkAPI
@@ -156,4 +209,11 @@ const forgotPassword = createAppAsyncThunk<any, ForgotPassArgsType>(
 export const authReducer = slice.reducer;
 export const authActions = slice.actions
 // Санки  упакуем в объект, нам это пригодится в дальнейшем
-export const authThunks = {register, login, forgotPassword};
+export const authThunks = {
+	register,
+	login,
+	forgotPassword,
+	logout,
+	updateProfile,
+	me
+};
