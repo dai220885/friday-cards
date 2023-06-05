@@ -4,20 +4,21 @@ import {Counter} from 'features/counter/Counter';
 import './App.css';
 import {Provider} from 'react-redux';
 import {store} from 'app/store';
-import {createBrowserRouter, Navigate, RouterProvider} from 'react-router-dom';
-import {Login} from 'features/login/Login';
-import {Register} from 'features/register/Register';
-import {Profile} from 'features/Profile';
+import {createBrowserRouter, Navigate, Outlet, RouterProvider, useNavigate} from 'react-router-dom';
+import {Login} from 'features/auth/login/Login';
+import {Register} from 'features/auth/register/Register';
+
 import {createTheme, LinearProgress, Theme, ThemeProvider} from '@mui/material';
 import {useAppDispatch, useAppSelector} from 'app/hooks';
 import {appActions} from 'features/App/app.slice';
 import {instance} from 'app/instance';
-import {LoginTest} from 'features/login/LoginTest';
+import {LoginTest} from 'features/auth/login/LoginTest';
 import {Layout} from 'features/layout/Layout';
 import {toast, ToastContainer} from 'react-toastify';
 import {ForgotPasswordForm} from 'features/auth/forgot-password/ForgotPasswordForm';
 import 'react-toastify/dist/ReactToastify.css'
-
+import {BackLink} from 'common/components/BackLink/BackLink';
+import {Profile} from 'features/auth/profile/Profile';
 const Test = () => {
 	const isLoading = useAppSelector((state) => state.app.isLoading);
 	const error = useAppSelector((state) => state.app.error);
@@ -48,11 +49,18 @@ const Test = () => {
 	);
 }
 
-
 const router = createBrowserRouter([
 	{
 		path: '/friday-cards',
 		element: <Navigate to="/"/>,
+	},
+	{
+		element: <ProtectedRoute />,
+		children: [
+			{
+				element: <div>protected</div>,
+			},
+		],
 	},
 	{
 		path: '/',
@@ -109,6 +117,7 @@ const theme: Theme = createTheme()
 
 function App() {
 	const isLoading = useAppSelector((state) => state.app.isLoading)
+
 	return (
 		<ThemeProvider theme={theme}>
 			 {/*<Provider store={store}>*/}
@@ -125,6 +134,7 @@ function App() {
 				theme="light"
 			/>
 			{isLoading && <LinearProgress/>}
+
 			{/* Same as */}
 			{/*<ToastContainer />*/}
 			{/*<Layout>*/}
@@ -186,6 +196,25 @@ function App() {
 		// </div>
 	);
 }
+
+function ProtectedRoute () {
+	const isAuthed = useAppSelector((state) => state.auth.isAuthed)
+	const navigate = useNavigate()
+
+	useEffect( () => {
+		//2. когда компонента вмонтирована, но ничего не отрисованож, проверяем isAuthed (пока не авторизовались, будет null и отработает return
+		if (isAuthed === null) return
+		//3. когда в isAuthed что-то попадет (true/false), useEffect сработает снова и выполнит navigate('/')
+		// (если isAuthed false) или вернет <Outlet/> (если isAuthed true)
+		if (!isAuthed) navigate('/')
+	}, [isAuthed, navigate])
+	//1. попадем сюда перед отработкой юзэффекта,
+	if (!isAuthed) return null //тут можно отобразить лоадер
+	//4.
+	return <Outlet/>
+}
+
+
 
 export default App;
 
