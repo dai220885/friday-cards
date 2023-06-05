@@ -1,0 +1,22 @@
+.linkWrapper {
+    position: absolute;
+    top: 74px;
+    left: 136px;
+    cursor: pointer;
+}
+
+.link {
+    display: flex;
+    gap: 10px;
+}
+
+.linkImg {
+
+}
+
+.linkText {
+    color: var(--black-color);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+}
