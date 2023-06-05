@@ -4,17 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from 'app/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
 import './index.css';
-import {Login} from 'features/login/Login';
-import {Register} from 'features/register/Register';
-import {Profile} from 'features/Profile';
-import {Counter} from 'features/counter/Counter';
-
-
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
