@@ -1,0 +1,54 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 36px;
+    background-color: var(--white--color);
+}
+.table__head {
+    background-color: #E5E5E5;
+    border: 1px solid #E5E5E5;
+}
+.table__tr {
+    border-bottom: var(--border);
+}
+.table__colName {
+    padding: 16px 0 16px 36px;
+}
+.table__colValue {
+    padding: 16px 0 16px 36px;
+}
+.table__colValue_actionsWrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 80px;
+}
+.table__colValue_actionsWrapper_center {
+    justify-content: center;
+    gap: 10px;
+}
+.table__colValue_actions {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    padding-top: 12px;
+    align-items: center;
+}
+.table__colValue_actions_justLearn {
+    justify-content: center;
+}
+.table__link {
+    color: var(--black-color);
+}
+
+
+.paginationWrapper {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.paginationText {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: var(--black-color);
+}

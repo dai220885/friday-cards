@@ -74,7 +74,7 @@
 .hr {
     position: absolute;
     right: 0;
-    bottom: 4px;
+    bottom: -7px;
     border: 1px solid var(--black-color);
     transform: rotate(45deg);
     width: 23px;

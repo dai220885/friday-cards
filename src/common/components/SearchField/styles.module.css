@@ -1,0 +1,14 @@
+.searchWrapper {
+    width: 413px;
+    position: relative;
+}
+.searchInput {
+    background-image: url('search.svg');
+    background-position: 10px center;
+    background-repeat: no-repeat;
+    padding: 10px 32px;
+}
+.searchLabel {
+    font-size: 14px;
+    line-height: 17px;
+}

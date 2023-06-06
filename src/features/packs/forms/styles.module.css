@@ -1,0 +1,83 @@
+.background {
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    z-index: 1000000;
+    background-color: rgba(0, 0, 0, 0.45);
+}
+
+.closeImgWrapper {
+    position: relative;
+}
+
+.closeImg {
+    position: absolute;
+    right: -20px;
+    top: -10px;
+    cursor: pointer;
+}
+
+.button {
+    width: 100px;
+}
+
+.buttonsWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 0 10px 0;
+}
+
+.checkboxWrapper {
+    margin: 35px 0;
+    display: flex;
+    gap: 10px;
+}
+
+.label {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+    letter-spacing: 0.01em;
+}
+
+/*from checkbox*/
+.checkbox {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    vertical-align: middle;
+    margin-right: 8px;
+    border-radius: 3px;
+    border: 1px solid var(--primary-color);
+    cursor: pointer;
+}
+
+.checkbox:checked {
+    appearance: none;
+    background-color: var(--primary-color);
+    background-image: url('checked.svg');
+}
+
+.checkbox:focus {
+    border-color: #0059b3;
+}
+
+.spanClassName {
+    font-family: 'Montserrat', sans-serif;
+    color: #06c;
+}
+
+.desc {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+}

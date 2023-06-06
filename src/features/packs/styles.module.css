@@ -1,0 +1,30 @@
+.packsWrapper {
+    position: relative;
+}
+
+.packs {
+    max-width: 1008px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+.emptyPackWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+    padding-top: 100px;
+}
+
+.addCardDesc {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: var(--black-color);
+    opacity: 0.5;
+}
+
+.buttonEmptyPackWrapper {
+
+}

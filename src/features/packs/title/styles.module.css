@@ -1,0 +1,15 @@
+.pack__titleWrapper {
+    display: flex;
+    align-items: center;
+    height: 108px;
+    justify-content: space-between;
+    padding: 120px 0 60px 0;
+}
+.packs__title {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 27px;
+}
+.buttonWrapper {
+    width: 170px;
+}
