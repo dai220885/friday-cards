@@ -43,7 +43,7 @@ export const LoginTest = () => {
 				toast.success("You are logged in successfully")
 				setTimeout(() => {
 					//пока временно редиректим на profile, нужно изменить на /packs
-					navigate("/profile")
+					navigate("/packs")
 				}, 500)
 			}).catch((err) => {
 				//debugger
