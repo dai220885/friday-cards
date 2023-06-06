@@ -19,6 +19,7 @@ import {ForgotPasswordForm} from 'features/auth/forgot-password/ForgotPasswordFo
 import 'react-toastify/dist/ReactToastify.css'
 import {BackLink} from 'common/components/BackLink/BackLink';
 import {Profile} from 'features/auth/profile/Profile';
+import {Packs} from 'features/packs/Packs';
 const Test = () => {
 	const isLoading = useAppSelector((state) => state.app.isLoading);
 	const error = useAppSelector((state) => state.app.error);
@@ -95,13 +96,14 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/packs',
-		element: <><h1>Packs</h1>
-			<button onClick={() => {
-				toast.success('test toast');
-				alert('333')
-			}}>+
-			</button>
-		</>,
+		// element: <><h1>Packs</h1>
+		// 	<button onClick={() => {
+		// 		toast.success('test toast');
+		// 		alert('333')
+		// 	}}>+
+		// 	</button>
+		// </>,
+		element: <Packs/>
 	},
 	{
 		path: '/cards',
